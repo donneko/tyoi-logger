@@ -29,7 +29,6 @@ function textNormalizer(text:string,width:number):string[] {
 
     for(const text of textList){
         const index = textList.indexOf(text);
-
         const calcAnsiLengthValue = calcAnsiLength(text);
         const textWidth   = stringWidth(text);
         const overContent = Math.ceil(textWidth / width);
@@ -58,29 +57,38 @@ function textNormalizer(text:string,width:number):string[] {
     return fixedTextList;
 }
 
-type CreateData = {
-    type:string;
-    message:string;
-    createMessage:string;
-}
-
 export type LoggerCreateData = {
     type:string;
     message:string;
     createMessage:string;
     date:number;
 }
-
-
-function createData(data:CreateData):LoggerCreateData{
-    return {
-        ...data,
-        date: Date.now(),
-    };
-}
+type LogType =
+    "INFO"
+    |"WARN"
+    |"ERROR"
+    |"SUCCESS"
+    |"PROCESS"
+    |"MESSAGE"
+    |"SYSTEM"
+    |"BER";
 
 
 class Logger{
+
+    private createLog(
+        type:LogType,
+        message:string,
+        label:string
+    ):LoggerCreateData{
+        return {
+            type,
+            message:`[${type}] ${message}`,
+            createMessage:`${label} ${message}`,
+            date: Date.now()
+        }
+    }
+
     #addStdout(obj:LoggerCreateData){
         const {createMessage,...stdoutObj } = obj;
         process.stdout.write(JSON.stringify(stdoutObj));
@@ -104,12 +112,8 @@ class Logger{
         return this.#loggerSelectProcess(data);
     }
     createInfo(message: string):LoggerCreateData{
-        const obj = createData({
-            type:"INFO",
-            message:`[INFO] ${message}`,
-            createMessage:`${pc.blueBright("[INFO]")} ${message}`,
-        });
-        return obj;
+        const type:LogType = "INFO";  
+        return this.createLog(type,message,pc.blueBright(`[${type}]`));
     }
 
     warn(message: string):LoggerCreateData{
@@ -117,12 +121,8 @@ class Logger{
         return this.#loggerSelectProcess(data);
     }
     createWarn(message: string):LoggerCreateData{
-        const obj = createData({
-            type: "WARN",
-            message: `[WARN] ${message}`,
-            createMessage: `${pc.yellow("[WARN]")} ${message}`,
-        });
-        return obj;
+        const type:LogType = "WARN";  
+        return this.createLog(type,message,pc.yellow(`[${type}]`));
     }
 
     error(message: string):LoggerCreateData{
@@ -132,13 +132,8 @@ class Logger{
         return this.#loggerSelectProcess(data);
     }
     createError(message: string):LoggerCreateData{
-        const obj = createData({
-            type: "ERROR",
-            message: `[ERROR] ${message}`,
-            createMessage: `${pc.red("[ERROR]")} ${message}`,
-        });
-
-        return obj;
+        const type:LogType = "ERROR";  
+        return this.createLog(type,message,pc.red(`[${type}]`));
     }
 
     success(message: string):LoggerCreateData{
@@ -146,12 +141,8 @@ class Logger{
         return this.#loggerSelectProcess(data);
     }
     createSuccess(message: string):LoggerCreateData{
-        const obj = createData({
-            type: "SUCCESS",
-            message: `[SUCCESS] ${message}`,
-            createMessage: `${pc.green("[SUCCESS]")} ${message}`,
-        });
-        return obj;
+        const type:LogType = "SUCCESS";  
+        return this.createLog(type,message,pc.green(`[${type}]`));
     }
 
     process(message: string):LoggerCreateData{
@@ -159,12 +150,8 @@ class Logger{
         return this.#loggerSelectProcess(data);
     }
     createProcess(message: string):LoggerCreateData{
-        const obj = createData({
-            type: "PROCESS",
-            message: `[PROCESS] ${message}`,
-            createMessage: `${pc.magentaBright("[PROCESS]")} ${message}`,
-        });
-        return obj;
+        const type:LogType = "PROCESS";  
+        return this.createLog(type,message,pc.magentaBright(`[${type}]`));
     }
 
     message(message: string):LoggerCreateData{
@@ -172,12 +159,8 @@ class Logger{
         return this.#loggerSelectProcess(data);
     }
     createMessage(message: string):LoggerCreateData{
-        const obj = createData({
-            type: "MESSAGE",
-            message: `[MESSAGE] ${message}`,
-            createMessage: `${pc.gray("[MESSAGE]")} ${message}`,
-        });
-        return obj;
+        const type:LogType = "MESSAGE";  
+        return this.createLog(type,message,pc.gray(`[${type}]`));
     }
 
     system(message: string):LoggerCreateData{
@@ -185,12 +168,8 @@ class Logger{
         return this.#loggerSelectProcess(data);
     }
     createSystem(message: string):LoggerCreateData{
-        const obj = createData({
-            type: "SYSTEM",
-            message: `[SYSTEM] ${message}`,
-            createMessage: `${pc.magentaBright("[SYSTEM]")} ${message}`,
-        });
-        return obj;
+        const type:LogType = "SYSTEM";  
+        return this.createLog(type,message,pc.magentaBright(`[${type}]`));
     }
 
     bar():LoggerCreateData{
@@ -199,13 +178,10 @@ class Logger{
     }
     createBar():LoggerCreateData{
         const width = getWidth();
-        const line = `${"─".repeat(width - 2)}`;
-        const obj = createData({
-            type: "BAR",
-            message: line,
-            createMessage: line,
-        });
-        return obj;
+        const message = `${"─".repeat(width - 2)}`;
+
+        const type:LogType = "BER";  
+        return this.createLog(type,message,pc.blueBright(`[${type}]`));
     }
 
     window(window:{
