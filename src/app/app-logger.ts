@@ -1,80 +1,11 @@
 import pc from "picocolors";
 import stringWidth from "string-width";
-import stripAnsi from "strip-ansi";
+import { textNormalizer } from "../service/text-normalizer.js"
+import { getWidth } from "../service/get-width.js"
+import { logSelectProcess } from "../service/log-select-process.js"
+import type { LogType , LoggerCreateData } from "../types/logger.js"
 
-function getWidth():number{
-    const number = Number(process.env.COLUMNS);
-    const envColumns = Number.isFinite(number)? number : null;
-
-    return process.stdout.columns ??
-            envColumns ??
-            80;
-}
-
-function calcAnsiLength(text:string){
-    const cleanText =  stripAnsi(text);
-    const ansiLength = (text.length - cleanText.length);
-    return ansiLength;
-}
-
-
-function textNormalizer(text:string,width:number):string[] {
-
-    const textList = (Array.isArray(text.split("\n")))?
-        text.split("\n"):
-        [text];
-
-    let fixedTextList:string[] = [];
-    const headerLength = stringWidth(stripAnsi(textList[0]?? "").match(/\[[a-zA-Z1-9]*\]\s/)?.[0] ?? "");
-
-    for(const text of textList){
-        const index = textList.indexOf(text);
-        const calcAnsiLengthValue = calcAnsiLength(text);
-        const textWidth   = stringWidth(text);
-        const overContent = Math.ceil(textWidth / width);
-        const overHeader  = (overContent - 1) * headerLength;
-        const textLength  = (textWidth - headerLength) + overHeader + calcAnsiLengthValue;
-
-        let fixedText = [];
-
-        if(textLength <= width){
-            const prefix = " ".repeat(index === 0?0:headerLength)
-            fixedTextList.push(`${prefix}${text}`);
-            continue;
-        }
-
-        // 横幅より長かったら...
-        for(let i = 0; i < textLength;){
-            const prefix = " ".repeat(i >= width?headerLength:0);
-            const end = width + (i >= width? -headerLength:calcAnsiLengthValue);
-
-            const tmp = `${prefix}${text.slice(i, i + end)}`;
-            fixedText.push(tmp);
-            i += width;
-        }
-        fixedTextList = fixedTextList.concat(fixedText);
-    }
-    return fixedTextList;
-}
-
-export type LoggerCreateData = {
-    type:string;
-    message:string;
-    createMessage:string;
-    date:number;
-}
-type LogType =
-    "INFO"
-    |"WARN"
-    |"ERROR"
-    |"SUCCESS"
-    |"PROCESS"
-    |"MESSAGE"
-    |"SYSTEM"
-    |"BER";
-
-
-class Logger{
+export class Logger{
 
     private createLog(
         type:LogType,
@@ -88,28 +19,15 @@ class Logger{
             date: Date.now()
         }
     }
-
-    #addStdout(obj:LoggerCreateData){
-        const {createMessage,...stdoutObj } = obj;
-        process.stdout.write(JSON.stringify(stdoutObj));
-    }
-    #addStderr(message:string){
-        const out = message.endsWith("\n") ? message : message + "\n";
-        process.stderr.write(out);
-    }
-    #loggerSelectProcess(data:LoggerCreateData){
-        if((process.stdout.isTTY)){
-            this.#addStderr(data.createMessage);
-        }else{
-            this.#addStdout(data);
-        }
-
+    private loggerSelectProcess(data:LoggerCreateData){
+        logSelectProcess(data);
         return data;
     }
 
     info(message: string):LoggerCreateData{
         const data = this.createInfo(message);
-        return this.#loggerSelectProcess(data);
+        logSelectProcess(data);
+        return data;
     }
     createInfo(message: string):LoggerCreateData{
         const type:LogType = "INFO";  
@@ -118,7 +36,8 @@ class Logger{
 
     warn(message: string):LoggerCreateData{
         const data = this.createWarn(message);
-        return this.#loggerSelectProcess(data);
+        logSelectProcess(data);
+        return data;
     }
     createWarn(message: string):LoggerCreateData{
         const type:LogType = "WARN";  
@@ -126,10 +45,9 @@ class Logger{
     }
 
     error(message: string):LoggerCreateData{
-
         const data = this.createError(message);
-
-        return this.#loggerSelectProcess(data);
+        logSelectProcess(data);
+        return data;
     }
     createError(message: string):LoggerCreateData{
         const type:LogType = "ERROR";  
@@ -138,7 +56,8 @@ class Logger{
 
     success(message: string):LoggerCreateData{
         const data = this.createSuccess(message);
-        return this.#loggerSelectProcess(data);
+        logSelectProcess(data);
+        return data;
     }
     createSuccess(message: string):LoggerCreateData{
         const type:LogType = "SUCCESS";  
@@ -147,7 +66,8 @@ class Logger{
 
     process(message: string):LoggerCreateData{
         const data = this.createProcess(message);
-        return this.#loggerSelectProcess(data);
+        logSelectProcess(data);
+        return data;
     }
     createProcess(message: string):LoggerCreateData{
         const type:LogType = "PROCESS";  
@@ -156,7 +76,8 @@ class Logger{
 
     message(message: string):LoggerCreateData{
         const data = this.createMessage(message);
-        return this.#loggerSelectProcess(data);
+        logSelectProcess(data);
+        return data;
     }
     createMessage(message: string):LoggerCreateData{
         const type:LogType = "MESSAGE";  
@@ -165,7 +86,8 @@ class Logger{
 
     system(message: string):LoggerCreateData{
         const data = this.createSystem(message);
-        return this.#loggerSelectProcess(data);
+        logSelectProcess(data);
+        return data;
     }
     createSystem(message: string):LoggerCreateData{
         const type:LogType = "SYSTEM";  
@@ -174,7 +96,8 @@ class Logger{
 
     bar():LoggerCreateData{
         const data = this.createBar();
-        return this.#loggerSelectProcess(data);
+        logSelectProcess(data);
+        return data;
     }
     createBar():LoggerCreateData{
         const width = getWidth();
@@ -191,7 +114,7 @@ class Logger{
 
         if(!(process.stdout.isTTY)){
             window.content.forEach((data)=>{
-                this.#loggerSelectProcess(data)
+                logSelectProcess(data);
             });
             return;
         }
@@ -203,25 +126,25 @@ class Logger{
             return `│${line}${" ".repeat(safeRepeatNumber)}│`;
         }
 
-        this.#addStderr(`┌${"─".repeat(width - 2)}┐`);
+        const output:string[] = [];
+
+        output.push(`┌${"─".repeat(width - 2)}┐`);
 
         textNormalizer(window.title,(width - 2))
             .forEach((text)=>{
-                this.#addStderr(createLine(text));
+                output.push(createLine(text));
         });
 
-        this.#addStderr(`├${"─".repeat(width - 2)}┤`);
+        output.push(`├${"─".repeat(width - 2)}┤`);
 
         window.content.
             forEach((lineText)=>{
                 textNormalizer(lineText.createMessage,(width - 2)).
                     forEach((text)=>{
-                        this.#addStderr(createLine(text));
+                        output.push(createLine(text));
                 });
         });
 
-        this.#addStderr(`└${"─".repeat(width - 2)}┘`);
+        output.push(`└${"─".repeat(width - 2)}┘`);
     }
 }
-
-export const logger = new Logger();
