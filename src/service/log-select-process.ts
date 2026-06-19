@@ -5,11 +5,8 @@ import type { LoggerCreateData } from "../types/logger.js";
 export function logSelectProcess(logData:LoggerCreateData){
     if((process.stdout.isTTY)){
         const message = logData.createMessage;
-        const line    = message.endsWith("\n")? 
-            message:
-            message + "\n";
 
-        writeStderr(line);
+        writeStderr(message);
     }else{
         writeStdout(logData);
     }

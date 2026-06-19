@@ -1,3 +1,7 @@
 export function writeStderr(message:string){
-    process.stderr.write(message);
+    const line    = message.endsWith("\n")? 
+        message:
+        message + "\n";
+
+    process.stderr.write(line);
 }

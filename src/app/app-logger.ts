@@ -145,6 +145,7 @@ export class Logger{
 
         output.push(`└${"─".repeat(width)}┘`);
 
+        
         // outputの行をcliに出す
         output.forEach(o => writeStderr(o));
     }
