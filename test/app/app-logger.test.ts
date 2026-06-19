@@ -1,13 +1,13 @@
 import { expect,describe ,test } from "vitest";
 import { Logger } from "../../src/app/app-logger.js";
+import type { LogType } from "../../src/types/logger.js"
 
 describe("Logger",()=>{
 
     const logger = new Logger();
-    const method = [
+    const method:{name:LogType,fn:Function}[] = [
         {name:"INFO",fn:logger.createInfo},
         {name:"ERROR",fn:logger.createError},
-        {name:"BAR",fn:logger.createBar},
         {name:"MESSAGE",fn:logger.createMessage},
         {name:"PROCESS",fn:logger.createProcess},
         {name:"SUCCESS",fn:logger.createSuccess},
@@ -27,4 +27,13 @@ describe("Logger",()=>{
             expect(data.date).toEqual(expect.any(Number));
         });
     });
+
+    test("BAR がログのデータを正しく作成できる",()=>{
+        const data = logger.createBar();
+        const name:LogType = "BAR";
+
+        expect(data.type).toBe(name);
+        expect(data.message).toEqual(expect.any(String));
+        expect(data.date).toEqual(expect.any(Number));
+    })
 })

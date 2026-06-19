@@ -12,4 +12,4 @@ export type LogType =
     |"PROCESS"
     |"MESSAGE"
     |"SYSTEM"
-    |"BER";
+    |"BAR";

@@ -100,7 +100,7 @@ export class Logger{
         const width = getWidth();
         const message = `${"─".repeat(width - 2)}`;
 
-        const type:LogType = "BER";  
+        const type:LogType = "BAR";  
         return this.createLog(type,message,pc.blueBright(`[${type}]`));
     }
 
