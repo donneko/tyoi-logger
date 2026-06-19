@@ -3,6 +3,7 @@ import stringWidth from "string-width";
 import { textNormalizer } from "../service/text-normalizer.js"
 import { getWidth } from "../service/get-width.js"
 import { logSelectProcess } from "../service/log-select-process.js"
+import { writeStderr } from "../service/write-stderr.js"
 import type { LogType , LoggerCreateData } from "../types/logger.js"
 
 export class Logger{
@@ -18,10 +19,6 @@ export class Logger{
             createMessage:`${label} ${message}`,
             date: Date.now()
         }
-    }
-    private loggerSelectProcess(data:LoggerCreateData){
-        logSelectProcess(data);
-        return data;
     }
 
     info(message: string):LoggerCreateData{
@@ -107,6 +104,13 @@ export class Logger{
         return this.createLog(type,message,pc.blueBright(`[${type}]`));
     }
 
+    private createLine(line:string):string{
+        const width = getWidth();
+        const repeatNumber = (width - 2) - stringWidth(line);
+        const safeRepeatNumber = repeatNumber >= 0 ? repeatNumber : 0;
+        return `│${line}${" ".repeat(safeRepeatNumber)}│`;
+    }
+
     window(window:{
         title:string;
         content:LoggerCreateData[];
@@ -119,32 +123,29 @@ export class Logger{
             return;
         }
 
-        const width = getWidth();
-        const createLine = (line:string):string => {
-            const repeatNumber = (width - 2) - stringWidth(line);
-            const safeRepeatNumber = repeatNumber >= 0 ? repeatNumber : 0;
-            return `│${line}${" ".repeat(safeRepeatNumber)}│`;
-        }
-
+        const width = getWidth() - 2;
         const output:string[] = [];
 
-        output.push(`┌${"─".repeat(width - 2)}┐`);
+        output.push(`┌${"─".repeat(width)}┐`);
 
-        textNormalizer(window.title,(width - 2))
-            .forEach((text)=>{
-                output.push(createLine(text));
+        textNormalizer(window.title,(width))
+        .forEach((text)=>{
+            output.push(this.createLine(text));
         });
 
-        output.push(`├${"─".repeat(width - 2)}┤`);
+        output.push(`├${"─".repeat(width)}┤`);
 
         window.content.
-            forEach((lineText)=>{
-                textNormalizer(lineText.createMessage,(width - 2)).
-                    forEach((text)=>{
-                        output.push(createLine(text));
-                });
+        forEach((lineText)=>{
+            textNormalizer(lineText.createMessage,(width))
+            .forEach((text)=>{
+                output.push(this.createLine(text));
+            });
         });
 
-        output.push(`└${"─".repeat(width - 2)}┘`);
+        output.push(`└${"─".repeat(width)}┘`);
+
+        // outputの行をcliに出す
+        output.forEach(o => writeStderr(o));
     }
 }
