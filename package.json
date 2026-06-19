@@ -1,5 +1,5 @@
 {
-  "name": "tyoi-logger",
+  "name": "@donneko/tyoi-logger",
   "version": "0.0.1",
   "main": "./dist/index.js",
   "exports": {
