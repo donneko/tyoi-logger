@@ -3,7 +3,6 @@ import { Logger } from "../../src/app/app-logger.js";
 import type { LogType } from "../../src/types/logger.js"
 
 describe("Logger",()=>{
-
     const logger = new Logger();
     const method:{name:LogType,fn:Function}[] = [
         {name:"INFO",fn:logger.createInfo},

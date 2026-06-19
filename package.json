@@ -8,6 +8,7 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist/",
+    "docs/",
     "README.md",
     "LICENSE"
   ],
@@ -22,7 +23,7 @@
   "keywords": [],
   "author": "丼猫",
   "license": "MIT",
-  "description": "",
+  "description": "Easily create a log",
   "dependencies": {
     "picocolors": "^1.1.1",
     "string-width": "^8.2.1",
