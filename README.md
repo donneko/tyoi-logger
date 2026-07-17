@@ -1,6 +1,6 @@
 # @donneko/tyoi-logger
 
-![output example](docs/img/log-output.png)
+![output example](docs/src/img/log-output.png)
 
 **Easily create a log**
 > Warning: in development
