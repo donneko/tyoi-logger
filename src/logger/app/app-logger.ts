@@ -4,7 +4,7 @@ import { textNormalizer } from "../service/text-normalizer.js";
 import { getWidth } from "../service/get-width.js";
 import { logSelectProcess } from "../service/log-select-process.js";
 import { writeStderr } from "../service/write-stderr.js";
-import type { LogType, LoggerCreateData, LogConfig } from "../types/logger.js";
+import type { LogType, LoggerCreateData, LogConfig } from "../../types/logger.js";
 
 export class Logger {
     private createLog(
