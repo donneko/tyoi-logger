@@ -1,24 +1,24 @@
-import { expect,describe ,test } from "vitest";
+import { expect, describe, test } from "vitest";
 import { Logger } from "../../src/app/app-logger.js";
-import type { LogType } from "../../src/types/logger.js"
+import type { LogType } from "../../src/types/logger.js";
 
-describe("Logger",()=>{
+describe("Logger", () => {
     const logger = new Logger();
-    const method:{name:LogType,fn:Function}[] = [
-        {name:"INFO",fn:logger.createInfo},
-        {name:"ERROR",fn:logger.createError},
-        {name:"MESSAGE",fn:logger.createMessage},
-        {name:"PROCESS",fn:logger.createProcess},
-        {name:"SUCCESS",fn:logger.createSuccess},
-        {name:"SYSTEM",fn:logger.createSystem},
-        {name:"WARN",fn:logger.createWarn},
+    const method: { name: LogType; fn: Function }[] = [
+        { name: "INFO", fn: logger.createInfo },
+        { name: "ERROR", fn: logger.createError },
+        { name: "MESSAGE", fn: logger.createMessage },
+        { name: "PROCESS", fn: logger.createProcess },
+        { name: "SUCCESS", fn: logger.createSuccess },
+        { name: "SYSTEM", fn: logger.createSystem },
+        { name: "WARN", fn: logger.createWarn },
     ];
-    const message:string = "HELLO!!";
+    const message: string = "HELLO!!";
 
-    method.forEach((testData)=>{
-        const {name,fn} = testData;
+    method.forEach((testData) => {
+        const { name, fn } = testData;
 
-        test(`${name} がログのデータを正しく作成できる`,()=>{
+        test(`${name} がログのデータを正しく作成できる`, () => {
             const data = fn(message);
 
             expect(data.type).toBe(name);
@@ -27,12 +27,12 @@ describe("Logger",()=>{
         });
     });
 
-    test("BAR がログのデータを正しく作成できる",()=>{
+    test("BAR がログのデータを正しく作成できる", () => {
         const data = logger.createBar();
-        const name:LogType = "BAR";
+        const name: LogType = "BAR";
 
         expect(data.type).toBe(name);
         expect(data.message).toEqual(expect.any(String));
         expect(data.date).toEqual(expect.any(Number));
-    })
-})
+    });
+});
