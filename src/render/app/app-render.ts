@@ -1,6 +1,6 @@
 import readline from "readline";
 
-export class Render {
+export class Renderer {
     private beforeIndex: number = 0;
     private printData: string[] = [];
 
