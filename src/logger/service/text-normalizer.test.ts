@@ -1,5 +1,5 @@
 import { expect, describe, test } from "vitest";
-import { textNormalizer } from "../../src/logger/service/text-normalizer.js";
+import { textNormalizer } from "./text-normalizer.js";
 
 describe("textNormalizer", () => {
     test("テキストが正常に改行された", () => {

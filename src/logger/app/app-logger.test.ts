@@ -1,6 +1,6 @@
 import { expect, describe, test } from "vitest";
-import { Logger } from "../../src/index.js";
-import type { LogType } from "../../src/types/logger.js";
+import { Logger } from "../../index.js";
+import type { LogType } from "../../types/logger.js";
 
 describe("Logger", () => {
     const logger = new Logger();

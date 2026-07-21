@@ -1,5 +1,5 @@
 import { expect, describe, test } from "vitest";
-import { getWidth } from "../../src/logger/service/get-width.js";
+import { getWidth } from "./get-width.js";
 
 describe("getWidth", () => {
     test("戻り値が数値", () => {
