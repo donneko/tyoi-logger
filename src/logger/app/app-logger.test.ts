@@ -8,7 +8,7 @@ describe("Logger クラスの通常ログ系", () => {
     const logger = new Logger();
     const method: {
         name: LogType;
-        fn: (message: string, dependencies: Partial<LoggerDependencies>) => LoggerCreateData;
+        fn: (message: string, dependencies?: Partial<LoggerDependencies>) => LoggerCreateData;
         color: (text: string) => string;
     }[] = [
         { name: "INFO", fn: logger.createInfo, color: pc.blueBright },
