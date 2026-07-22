@@ -1,11 +1,16 @@
-import { createLoggerDeps } from "../deps/create-logger-deps.js";
-import type { LoggerCreateData, LoggerDependencies } from "../types/logger.type.js";
+import { createLoggerDependencies } from "../deps/create-logger-deps.js";
+import { defaultWriteDependencies } from "../deps/logger-dependencies.js";
+import type { LoggerWriteDependencies } from "../types/logger-dependencies.type.js";
+import type { LoggerCreateData } from "../types/logger.type.js";
 
 export function writeStdout(
     data: LoggerCreateData,
-    dependencies: Partial<LoggerDependencies> = {}
+    dependencies: Partial<LoggerWriteDependencies> = {}
 ) {
-    const deps = createLoggerDeps(dependencies);
+    const deps = createLoggerDependencies<LoggerWriteDependencies>(
+        defaultWriteDependencies,
+        dependencies
+    );
 
     deps.processStdoutWrite(JSON.stringify(data));
 }

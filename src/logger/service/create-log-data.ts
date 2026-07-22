@@ -1,19 +1,19 @@
-import type {
-    LogType,
-    LoggerCreateData,
-    LogConfig,
-    LoggerDependencies,
-} from "../types/logger.type.js";
-import { createLoggerDeps } from "../deps/create-logger-deps.js";
+import type { LogType, LoggerCreateData, LogConfig } from "../types/logger.type.js";
+import { createLoggerDependencies } from "../deps/create-logger-deps.js";
+import { defaultCreateLogDataDependencies } from "../deps/logger-dependencies.js";
+import type { LoggerCreateLogDataDependencies } from "../types/logger-dependencies.type.js";
 
 export function createLogData(
     type: LogType,
     message: string,
     label: string,
     config?: LogConfig,
-    dependencies: Partial<LoggerDependencies> = {}
+    dependencies: Partial<LoggerCreateLogDataDependencies> = {}
 ): LoggerCreateData {
-    const deps = createLoggerDeps(dependencies);
+    const deps = createLoggerDependencies<LoggerCreateLogDataDependencies>(
+        defaultCreateLogDataDependencies,
+        dependencies
+    );
 
     const messageLabel = config?.labelHidden ? "" : `[${type}] `;
     const createMessageLabel = config?.labelHidden ? "" : `${label} `;

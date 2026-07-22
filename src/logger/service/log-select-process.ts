@@ -1,11 +1,16 @@
-import type { LoggerCreateData, LoggerDependencies } from "../types/logger.type.js";
-import { createLoggerDeps } from "../deps/create-logger-deps.js";
+import type { LoggerCreateData } from "../types/logger.type.js";
+import { createLoggerDependencies } from "../deps/create-logger-deps.js";
+import { defaultLogSelectDependencies } from "../deps/logger-dependencies.js";
+import type { LoggerLogSelectDependencies } from "../types/logger-dependencies.type.js";
 
 export function logSelectProcess(
     logData: LoggerCreateData,
-    dependencies: Partial<LoggerDependencies> = {}
+    dependencies: Partial<LoggerLogSelectDependencies> = {}
 ) {
-    const deps = createLoggerDeps(dependencies);
+    const deps = createLoggerDependencies<LoggerLogSelectDependencies>(
+        defaultLogSelectDependencies,
+        dependencies
+    );
 
     if (deps.isTTY) {
         const message = logData.createMessage;

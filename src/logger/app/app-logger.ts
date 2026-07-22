@@ -1,12 +1,16 @@
 import pc from "picocolors";
 import stringWidth from "string-width";
-import type { LogType, LoggerCreateData, LoggerDependencies } from "../types/logger.type.js";
+import type { LogType, LoggerCreateData } from "../types/logger.type.js";
 import { defaultLoggerDependencies } from "../deps/logger-dependencies.js";
-import { createLoggerDeps } from "../deps/create-logger-deps.js";
+import { createLoggerDependencies } from "../deps/create-logger-deps.js";
+import type { LoggerDependencies } from "../types/logger-dependencies.type.js";
 
 export class Logger {
     info = (message: string, dependencies: Partial<LoggerDependencies> = {}): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const data = this.createInfo(message);
         deps.logSelectProcess(data);
         return data;
@@ -15,13 +19,19 @@ export class Logger {
         message: string,
         dependencies: Partial<LoggerDependencies> = {}
     ): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const type: LogType = "INFO";
         return deps.createLogData(type, message, pc.blueBright(`[${type}]`));
     };
 
     warn = (message: string, dependencies: Partial<LoggerDependencies> = {}): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const data = this.createWarn(message);
         deps.logSelectProcess(data);
         return data;
@@ -30,13 +40,19 @@ export class Logger {
         message: string,
         dependencies: Partial<LoggerDependencies> = {}
     ): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const type: LogType = "WARN";
         return deps.createLogData(type, message, pc.yellow(`[${type}]`));
     };
 
     error = (message: string, dependencies: Partial<LoggerDependencies> = {}): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const data = this.createError(message);
         deps.logSelectProcess(data);
         return data;
@@ -45,7 +61,10 @@ export class Logger {
         message: string,
         dependencies: Partial<LoggerDependencies> = {}
     ): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const type: LogType = "ERROR";
         return deps.createLogData(type, message, pc.red(`[${type}]`));
     };
@@ -54,7 +73,10 @@ export class Logger {
         message: string,
         dependencies: Partial<LoggerDependencies> = {}
     ): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const data = this.createSuccess(message);
         deps.logSelectProcess(data);
         return data;
@@ -63,7 +85,10 @@ export class Logger {
         message: string,
         dependencies: Partial<LoggerDependencies> = {}
     ): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const type: LogType = "SUCCESS";
         return deps.createLogData(type, message, pc.green(`[${type}]`));
     };
@@ -72,7 +97,10 @@ export class Logger {
         message: string,
         dependencies: Partial<LoggerDependencies> = {}
     ): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const data = this.createProcess(message);
         deps.logSelectProcess(data);
         return data;
@@ -81,7 +109,10 @@ export class Logger {
         message: string,
         dependencies: Partial<LoggerDependencies> = {}
     ): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const type: LogType = "PROCESS";
         return deps.createLogData(type, message, pc.magentaBright(`[${type}]`));
     };
@@ -90,7 +121,10 @@ export class Logger {
         message: string,
         dependencies: Partial<LoggerDependencies> = {}
     ): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const data = this.createMessage(message);
         deps.logSelectProcess(data);
         return data;
@@ -99,7 +133,10 @@ export class Logger {
         message: string,
         dependencies: Partial<LoggerDependencies> = {}
     ): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const type: LogType = "MESSAGE";
         return deps.createLogData(type, message, pc.gray(`[${type}]`));
     };
@@ -108,7 +145,10 @@ export class Logger {
         message: string,
         dependencies: Partial<LoggerDependencies> = {}
     ): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const data = this.createSystem(message);
         deps.logSelectProcess(data);
         return data;
@@ -117,19 +157,28 @@ export class Logger {
         message: string,
         dependencies: Partial<LoggerDependencies> = {}
     ): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const type: LogType = "SYSTEM";
         return deps.createLogData(type, message, pc.magentaBright(`[${type}]`));
     };
 
     bar = (dependencies: Partial<LoggerDependencies> = {}): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const data = this.createBar();
         deps.logSelectProcess(data);
         return data;
     };
     createBar = (dependencies: Partial<LoggerDependencies> = {}): LoggerCreateData => {
-        const deps = createLoggerDeps(dependencies);
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
         const message = `${"─".repeat(deps.width - 2)}`;
 
         const type: LogType = "BAR";
@@ -146,10 +195,10 @@ export class Logger {
         window: { title: string; content: LoggerCreateData[] },
         dependencies: Partial<LoggerDependencies> = {}
     ): void => {
-        const deps = {
-            ...defaultLoggerDependencies,
-            ...dependencies,
-        } as LoggerDependencies;
+        const deps = createLoggerDependencies<LoggerDependencies>(
+            defaultLoggerDependencies,
+            dependencies
+        );
 
         if (!deps.isTTY) {
             window.content.forEach((data) => {

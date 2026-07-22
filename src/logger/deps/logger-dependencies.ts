@@ -1,4 +1,10 @@
-import type { LoggerDependencies } from "../types/logger.type.js";
+import type {
+    LoggerDependencies,
+    LoggerCreateLogDataDependencies,
+    LoggerGetWidthDependencies,
+    LoggerLogSelectDependencies,
+    LoggerWriteDependencies,
+} from "../types/logger-dependencies.type.js";
 import { getWidth } from "../service/get-width.js";
 import { logSelectProcess } from "../service/log-select-process.js";
 import { writeStderr } from "../service/write-stderr.js";
@@ -11,17 +17,39 @@ export function defaultLoggerDependencies(): LoggerDependencies {
         isTTY: Boolean(process.stdout.isTTY),
         width: getWidth(),
         writeStderr: writeStderr,
-        writeStdout: writeStdout,
-        processStderrWrite: process.stderr.write,
-        processStdoutWrite: process.stdout.write,
         logSelectProcess: logSelectProcess,
         textNormalizer: textNormalizer,
+        createLogData: createLogData,
+    };
+}
+
+export function defaultCreateLogDataDependencies(): LoggerCreateLogDataDependencies {
+    return {
         date: Date,
+    };
+}
+
+export function defaultGetWidthDependencies(): LoggerGetWidthDependencies {
+    return {
         stdoutColumns: process.stdout.columns,
         envColumns: (() => {
             const columns = Number(process.env.COLUMNS);
-            return Number.isFinite(columns) ? columns : null;
+            return Number.isFinite(columns) ? columns : undefined;
         })(),
-        createLogData: createLogData,
+    };
+}
+
+export function defaultLogSelectDependencies(): LoggerLogSelectDependencies {
+    return {
+        isTTY: Boolean(process.stdout.isTTY),
+        writeStderr: writeStderr,
+        writeStdout: writeStdout,
+    };
+}
+
+export function defaultWriteDependencies(): LoggerWriteDependencies {
+    return {
+        processStderrWrite: process.stderr.write,
+        processStdoutWrite: process.stdout.write,
     };
 }

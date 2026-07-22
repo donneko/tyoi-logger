@@ -10,23 +10,3 @@ export type LogType =
 export type LogConfig = {
     labelHidden?: boolean;
 };
-
-export type LoggerDependencies = {
-    isTTY: boolean;
-    width: number;
-    writeStderr: (text: string) => void;
-    writeStdout: (data: LoggerCreateData) => void;
-    logSelectProcess: (data: LoggerCreateData) => void;
-    textNormalizer: (text: string, width: number) => string[];
-    date: { now: () => number };
-    envColumns: number | null | undefined;
-    stdoutColumns: number | null | undefined;
-    processStderrWrite: (text: string) => void;
-    processStdoutWrite: (text: string) => void;
-    createLogData: (
-        type: LogType,
-        message: string,
-        label: string,
-        config?: LogConfig
-    ) => LoggerCreateData;
-};

@@ -1,12 +1,11 @@
-import type { LoggerDependencies } from "../types/logger.type.js";
-import { defaultLoggerDependencies } from "./logger-dependencies.js";
+import type { LoggerAllDependencies } from "../types/logger-dependencies.type.js";
 
-export function createLoggerDeps(
-    dependencies: Partial<LoggerDependencies> = {}
-): LoggerDependencies {
-    const deps = {
-        ...defaultLoggerDependencies(),
+export function createLoggerDependencies<T extends LoggerAllDependencies>(
+    defaultDependencies: () => T,
+    dependencies: Partial<T> = {}
+): T {
+    return {
+        ...defaultDependencies(),
         ...dependencies,
-    } as LoggerDependencies;
-    return deps;
+    };
 }
