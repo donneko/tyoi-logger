@@ -1,11 +1,16 @@
-import { expect, describe, vi, it } from "vitest";
+import { expect, describe, it } from "vitest";
 import { Logger } from "../../index.js";
-import type { LogType } from "../types/logger.type.js";
+import type { LogType, LoggerCreateData } from "../types/logger.type.js";
+import type { LoggerDependencies } from "../types/logger-dependencies.type.js";
 import pc from "picocolors";
 
 describe("Logger クラスの通常ログ系", () => {
     const logger = new Logger();
-    const method: { name: LogType; fn: Function; color: Function }[] = [
+    const method: {
+        name: LogType;
+        fn: (message: string, dependencies: Partial<LoggerDependencies>) => LoggerCreateData;
+        color: (text: string) => string;
+    }[] = [
         { name: "INFO", fn: logger.createInfo, color: pc.blueBright },
         { name: "ERROR", fn: logger.createError, color: pc.red },
         { name: "MESSAGE", fn: logger.createMessage, color: pc.gray },

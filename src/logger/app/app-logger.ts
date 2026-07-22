@@ -179,9 +179,10 @@ export class Logger {
             defaultLoggerDependencies,
             dependencies
         );
+        const width = Math.max(5, deps.width - 2);
 
         // ウィンドウで生成したときに、横幅を超えないように
-        const message = `${"─".repeat(deps.width - 2)}`;
+        const message = `${"─".repeat(width)}`;
 
         const type: LogType = "BAR";
         return deps.createLogData(type, message, pc.blueBright(`[${type}]`), { labelHidden: true });
@@ -209,7 +210,7 @@ export class Logger {
             return;
         }
 
-        const width = Math.max(0, deps.width - 2);
+        const width = Math.max(5, deps.width - 2);
         const output: string[] = [];
 
         output.push(`┌${"─".repeat(width)}┐`);
