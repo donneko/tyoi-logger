@@ -12,7 +12,7 @@ import { Ask } from "@donneko/tyoi-logger";
 const ask = new Ask();
 
 const inputAnswer = await ask.input("質問を入力してください");
-const selectAnswer = await ask.select([
+const selectAnswer = await ask.select("選択してください", [
   "選択肢1",
   "選択肢2",
   "選択肢3",
@@ -36,12 +36,13 @@ console.log(`選択: ${selectAnswer}`);
 #### 戻り値
 - `text: string` — ユーザーの入力した文字列
 
-### `select(list)`
+### `select(text, list)`
 
 ユーザーに選択肢を提示し、選択を受け取ります。
 
 #### 引数
 
+- `text: string` — ユーザーに提示する質問文
 - `list: string[]` — 選択肢の配列
 
 #### 戻り値
