@@ -11,7 +11,7 @@ export class Logger {
             defaultLoggerDependencies,
             dependencies
         );
-        const data = this.createInfo(message);
+        const data = this.createInfo(message, deps);
         deps.logSelectProcess(data);
         return data;
     };
@@ -32,7 +32,7 @@ export class Logger {
             defaultLoggerDependencies,
             dependencies
         );
-        const data = this.createWarn(message);
+        const data = this.createWarn(message, deps);
         deps.logSelectProcess(data);
         return data;
     };
@@ -53,7 +53,7 @@ export class Logger {
             defaultLoggerDependencies,
             dependencies
         );
-        const data = this.createError(message);
+        const data = this.createError(message, deps);
         deps.logSelectProcess(data);
         return data;
     };
@@ -77,7 +77,7 @@ export class Logger {
             defaultLoggerDependencies,
             dependencies
         );
-        const data = this.createSuccess(message);
+        const data = this.createSuccess(message, deps);
         deps.logSelectProcess(data);
         return data;
     };
@@ -101,7 +101,7 @@ export class Logger {
             defaultLoggerDependencies,
             dependencies
         );
-        const data = this.createProcess(message);
+        const data = this.createProcess(message, deps);
         deps.logSelectProcess(data);
         return data;
     };
@@ -125,7 +125,7 @@ export class Logger {
             defaultLoggerDependencies,
             dependencies
         );
-        const data = this.createMessage(message);
+        const data = this.createMessage(message, deps);
         deps.logSelectProcess(data);
         return data;
     };
@@ -149,7 +149,7 @@ export class Logger {
             defaultLoggerDependencies,
             dependencies
         );
-        const data = this.createSystem(message);
+        const data = this.createSystem(message, deps);
         deps.logSelectProcess(data);
         return data;
     };
@@ -170,7 +170,7 @@ export class Logger {
             defaultLoggerDependencies,
             dependencies
         );
-        const data = this.createBar();
+        const data = this.createBar(deps);
         deps.logSelectProcess(data);
         return data;
     };
@@ -209,7 +209,7 @@ export class Logger {
             return;
         }
 
-        const width = deps.width - 2;
+        const width = Math.max(0, deps.width - 2);
         const output: string[] = [];
 
         output.push(`┌${"─".repeat(width)}┐`);

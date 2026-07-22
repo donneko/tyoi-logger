@@ -35,6 +35,7 @@ export async function askSelect(message: string, selects: string[]): Promise<str
 
         if (process.stdin.isTTY) {
             logSetup(keySelect);
+            logRender(message, selects, index, render);
         } else {
             resolve(undefined);
         }
