@@ -4,7 +4,6 @@
 
 ## [0.1.0] - 2026-07-22
 
-Unicode対応、バグ修正、公開API変更
 ### Added
 - `Logger` クラスの `window()` メソッドを Unicode 対応
 
