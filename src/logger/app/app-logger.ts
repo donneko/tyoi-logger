@@ -179,7 +179,7 @@ export class Logger {
             defaultLoggerDependencies,
             dependencies
         );
-        const width = Math.max(5, deps.width - 2);
+        const width = Math.max(0, deps.width - 2);
 
         // ウィンドウで生成したときに、横幅を超えないように
         const message = `${"─".repeat(width)}`;
