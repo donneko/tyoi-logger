@@ -1,13 +1,20 @@
-import { writeStderr } from "./write-stderr.js";
-import { writeStdout } from "./write-stdout.js";
-import type { LoggerCreateData } from "../../types/logger.js";
+import type { LoggerCreateData, LoggerDependencies } from "../types/logger.type.js";
+import { defaultLoggerDependencies } from "../deps/logger-dependencies.js";
 
-export function logSelectProcess(logData: LoggerCreateData) {
-    if (process.stdout.isTTY) {
+export function logSelectProcess(
+    logData: LoggerCreateData,
+    dependencies: Partial<LoggerDependencies> = {}
+) {
+    const deps = {
+        ...defaultLoggerDependencies,
+        ...dependencies,
+    } as LoggerDependencies;
+
+    if (deps.isTTY) {
         const message = logData.createMessage;
 
-        writeStderr(message);
+        deps.writeStderr(message);
     } else {
-        writeStdout(logData);
+        deps.writeStdout(logData);
     }
 }

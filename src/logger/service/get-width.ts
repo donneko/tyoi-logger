@@ -1,8 +1,11 @@
-export function getWidth():number{
-    const number = Number(process.env.COLUMNS);
-    const envColumns = Number.isFinite(number)? number : null;
+import type { LoggerDependencies } from "../types/logger.type.js";
+import { defaultLoggerDependencies } from "../deps/logger-dependencies.js";
 
-    return process.stdout.columns ??
-        envColumns ??
-        80;
+export function getWidth(dependencies: Partial<LoggerDependencies> = {}): number {
+    const deps = {
+        ...defaultLoggerDependencies,
+        ...dependencies,
+    } as LoggerDependencies;
+
+    return deps.stdoutColumns ?? deps.envColumns ?? 80;
 }

@@ -1,147 +1,183 @@
 import pc from "picocolors";
 import stringWidth from "string-width";
-import { textNormalizer } from "../service/text-normalizer.js";
-import { getWidth } from "../service/get-width.js";
-import { logSelectProcess } from "../service/log-select-process.js";
-import { writeStderr } from "../service/write-stderr.js";
-import type { LogType, LoggerCreateData, LogConfig } from "../../types/logger.js";
+import type { LogType, LoggerCreateData, LoggerDependencies } from "../types/logger.type.js";
+import { defaultLoggerDependencies } from "../deps/logger-dependencies.js";
+import { createLoggerDeps } from "../deps/create-logger-deps.js";
 
 export class Logger {
-    private createLog(
-        type: LogType,
-        message: string,
-        label: string,
-        config?: LogConfig
-    ): LoggerCreateData {
-        const messageLabel = config?.labelHidden ? "" : `[${type}] `;
-        const createMessageLabel = config?.labelHidden ? "" : label;
-
-        return {
-            type,
-            message: `${messageLabel}${message}`,
-            createMessage: `${createMessageLabel} ${message}`,
-            date: Date.now(),
-        };
-    }
-
-    info = (message: string): LoggerCreateData => {
+    info = (message: string, dependencies: Partial<LoggerDependencies> = {}): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
         const data = this.createInfo(message);
-        logSelectProcess(data);
+        deps.logSelectProcess(data);
         return data;
     };
-    createInfo = (message: string): LoggerCreateData => {
+    createInfo = (
+        message: string,
+        dependencies: Partial<LoggerDependencies> = {}
+    ): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
         const type: LogType = "INFO";
-        return this.createLog(type, message, pc.blueBright(`[${type}]`));
+        return deps.createLogData(type, message, pc.blueBright(`[${type}]`));
     };
 
-    warn = (message: string): LoggerCreateData => {
+    warn = (message: string, dependencies: Partial<LoggerDependencies> = {}): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
         const data = this.createWarn(message);
-        logSelectProcess(data);
+        deps.logSelectProcess(data);
         return data;
     };
-    createWarn = (message: string): LoggerCreateData => {
+    createWarn = (
+        message: string,
+        dependencies: Partial<LoggerDependencies> = {}
+    ): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
         const type: LogType = "WARN";
-        return this.createLog(type, message, pc.yellow(`[${type}]`));
+        return deps.createLogData(type, message, pc.yellow(`[${type}]`));
     };
 
-    error = (message: string): LoggerCreateData => {
+    error = (message: string, dependencies: Partial<LoggerDependencies> = {}): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
         const data = this.createError(message);
-        logSelectProcess(data);
+        deps.logSelectProcess(data);
         return data;
     };
-    createError = (message: string): LoggerCreateData => {
+    createError = (
+        message: string,
+        dependencies: Partial<LoggerDependencies> = {}
+    ): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
         const type: LogType = "ERROR";
-        return this.createLog(type, message, pc.red(`[${type}]`));
+        return deps.createLogData(type, message, pc.red(`[${type}]`));
     };
 
-    success = (message: string): LoggerCreateData => {
+    success = (
+        message: string,
+        dependencies: Partial<LoggerDependencies> = {}
+    ): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
         const data = this.createSuccess(message);
-        logSelectProcess(data);
+        deps.logSelectProcess(data);
         return data;
     };
-    createSuccess = (message: string): LoggerCreateData => {
+    createSuccess = (
+        message: string,
+        dependencies: Partial<LoggerDependencies> = {}
+    ): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
         const type: LogType = "SUCCESS";
-        return this.createLog(type, message, pc.green(`[${type}]`));
+        return deps.createLogData(type, message, pc.green(`[${type}]`));
     };
 
-    process = (message: string): LoggerCreateData => {
+    process = (
+        message: string,
+        dependencies: Partial<LoggerDependencies> = {}
+    ): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
         const data = this.createProcess(message);
-        logSelectProcess(data);
+        deps.logSelectProcess(data);
         return data;
     };
-    createProcess = (message: string): LoggerCreateData => {
+    createProcess = (
+        message: string,
+        dependencies: Partial<LoggerDependencies> = {}
+    ): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
         const type: LogType = "PROCESS";
-        return this.createLog(type, message, pc.magentaBright(`[${type}]`));
+        return deps.createLogData(type, message, pc.magentaBright(`[${type}]`));
     };
 
-    message = (message: string): LoggerCreateData => {
+    message = (
+        message: string,
+        dependencies: Partial<LoggerDependencies> = {}
+    ): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
         const data = this.createMessage(message);
-        logSelectProcess(data);
+        deps.logSelectProcess(data);
         return data;
     };
-    createMessage = (message: string): LoggerCreateData => {
+    createMessage = (
+        message: string,
+        dependencies: Partial<LoggerDependencies> = {}
+    ): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
         const type: LogType = "MESSAGE";
-        return this.createLog(type, message, pc.gray(`[${type}]`));
+        return deps.createLogData(type, message, pc.gray(`[${type}]`));
     };
 
-    system = (message: string): LoggerCreateData => {
+    system = (
+        message: string,
+        dependencies: Partial<LoggerDependencies> = {}
+    ): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
         const data = this.createSystem(message);
-        logSelectProcess(data);
+        deps.logSelectProcess(data);
         return data;
     };
-    createSystem = (message: string): LoggerCreateData => {
+    createSystem = (
+        message: string,
+        dependencies: Partial<LoggerDependencies> = {}
+    ): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
         const type: LogType = "SYSTEM";
-        return this.createLog(type, message, pc.magentaBright(`[${type}]`));
+        return deps.createLogData(type, message, pc.magentaBright(`[${type}]`));
     };
 
-    bar = (): LoggerCreateData => {
+    bar = (dependencies: Partial<LoggerDependencies> = {}): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
         const data = this.createBar();
-        logSelectProcess(data);
+        deps.logSelectProcess(data);
         return data;
     };
-    createBar = (): LoggerCreateData => {
-        const width = getWidth();
-        const message = `${"─".repeat(width - 2)}`;
+    createBar = (dependencies: Partial<LoggerDependencies> = {}): LoggerCreateData => {
+        const deps = createLoggerDeps(dependencies);
+        const message = `${"─".repeat(deps.width - 2)}`;
 
         const type: LogType = "BAR";
-        return this.createLog(type, message, pc.blueBright(`[${type}]`), { labelHidden: true });
+        return deps.createLogData(type, message, pc.blueBright(`[${type}]`), { labelHidden: true });
     };
 
-    private createLine(line: string): string {
-        const width = getWidth();
-        const repeatNumber = width - 2 - stringWidth(line);
+    private createLine(line: string, width: number): string {
+        const repeatNumber = width - stringWidth(line);
         const safeRepeatNumber = repeatNumber >= 0 ? repeatNumber : 0;
         return `│${line}${" ".repeat(safeRepeatNumber)}│`;
     }
 
-    window = (window: { title: string; content: LoggerCreateData[] }): void => {
-        if (!process.stdout.isTTY) {
+    window = (
+        window: { title: string; content: LoggerCreateData[] },
+        dependencies: Partial<LoggerDependencies> = {}
+    ): void => {
+        const deps = {
+            ...defaultLoggerDependencies,
+            ...dependencies,
+        } as LoggerDependencies;
+
+        if (!deps.isTTY) {
             window.content.forEach((data) => {
-                logSelectProcess(data);
+                deps.logSelectProcess(data);
             });
             return;
         }
 
-        const width = getWidth() - 2;
+        const width = deps.width - 2;
         const output: string[] = [];
 
         output.push(`┌${"─".repeat(width)}┐`);
 
-        textNormalizer(window.title, width).forEach((text) => {
-            output.push(this.createLine(text));
+        deps.textNormalizer(window.title, width).forEach((text) => {
+            output.push(this.createLine(text, width));
         });
 
         output.push(`├${"─".repeat(width)}┤`);
 
         window.content.forEach((lineText) => {
-            textNormalizer(lineText.createMessage, width).forEach((text) => {
-                output.push(this.createLine(text));
+            deps.textNormalizer(lineText.createMessage, width).forEach((text) => {
+                output.push(this.createLine(text, width));
             });
         });
 
         output.push(`└${"─".repeat(width)}┘`);
 
         // outputの行をcliに出す
-        output.forEach((o) => writeStderr(o));
+        output.forEach((o) => deps.writeStderr(o));
     };
 }

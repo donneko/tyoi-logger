@@ -1,38 +1,44 @@
-import { expect, describe, test } from "vitest";
+import { expect, describe, vi, it } from "vitest";
 import { Logger } from "../../index.js";
-import type { LogType } from "../../types/logger.js";
+import type { LogType } from "../types/logger.type.js";
+import pc from "picocolors";
 
-describe("Logger", () => {
+describe("Logger クラスの通常ログ系", () => {
     const logger = new Logger();
-    const method: { name: LogType; fn: Function }[] = [
-        { name: "INFO", fn: logger.createInfo },
-        { name: "ERROR", fn: logger.createError },
-        { name: "MESSAGE", fn: logger.createMessage },
-        { name: "PROCESS", fn: logger.createProcess },
-        { name: "SUCCESS", fn: logger.createSuccess },
-        { name: "SYSTEM", fn: logger.createSystem },
-        { name: "WARN", fn: logger.createWarn },
+    const method: { name: LogType; fn: Function; color: Function }[] = [
+        { name: "INFO", fn: logger.createInfo, color: pc.blueBright },
+        { name: "ERROR", fn: logger.createError, color: pc.red },
+        { name: "MESSAGE", fn: logger.createMessage, color: pc.gray },
+        { name: "PROCESS", fn: logger.createProcess, color: pc.magentaBright },
+        { name: "SUCCESS", fn: logger.createSuccess, color: pc.green },
+        { name: "SYSTEM", fn: logger.createSystem, color: pc.magentaBright },
+        { name: "WARN", fn: logger.createWarn, color: pc.yellow },
     ];
     const message: string = "HELLO!!";
 
     method.forEach((testData) => {
-        const { name, fn } = testData;
+        const { name, fn, color } = testData;
 
-        test(`${name} がログのデータを正しく作成できる`, () => {
+        it(`${name} がログのデータを正しく作成できる`, () => {
             const data = fn(message);
 
             expect(data.type).toBe(name);
             expect(data.message).toBe(`[${name}] ${message}`);
-            expect(data.date).toEqual(expect.any(Number));
+            expect(data.createMessage).toBe(`${color(`[${name}]`)} ${message}`);
+            expect(data.date).toEqual(expect.any(Date));
         });
     });
+});
 
-    test("BAR がログのデータを正しく作成できる", () => {
-        const data = logger.createBar();
+describe("Logger クラスのBAR", () => {
+    it("ログのデータを正しく作成できる", () => {
+        const logger = new Logger();
+        const data = logger.createBar(5);
         const name: LogType = "BAR";
 
         expect(data.type).toBe(name);
-        expect(data.message).toEqual(expect.any(String));
-        expect(data.date).toEqual(expect.any(Number));
+        expect(data.message).toBe("─────");
+        expect(data.createMessage).toBe("─────");
+        expect(data.date).toEqual(expect.any(Date));
     });
 });
