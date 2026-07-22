@@ -1,6 +1,6 @@
 {
   "name": "@donneko/tyoi-logger",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "main": "./dist/index.js",
   "exports": {
     ".": "./dist/index.js"
@@ -28,6 +28,7 @@
   "author": "丼猫",
   "license": "MIT",
   "description": "Easily create a log",
+  "engines": { "node": ">=20" },
   "dependencies": {
     "picocolors": "^1.1.1",
     "string-width": "^8.2.1",

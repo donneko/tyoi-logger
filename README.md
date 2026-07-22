@@ -21,7 +21,7 @@ log.warn("apple");   // [WARN] apple
 log.process("pen");  // [PROCESS] pen
 log.success("fish"); // [SUCCESS] fish
 
-log.window({
+log.window(
     title:"Hogehoge",
     content:[
         log.createInfo("dog"),     // [INFO] dog
@@ -32,6 +32,6 @@ log.window({
         log.createProcess("pen"),  // [PROCESS] pen
         log.createSuccess("fish"), // [SUCCESS] fish
     ]
-});
+);
 
 ```
