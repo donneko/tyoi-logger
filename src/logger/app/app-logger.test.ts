@@ -33,7 +33,7 @@ describe("Logger クラスの通常ログ系", () => {
 describe("Logger クラスのBAR", () => {
     it("ログのデータを正しく作成できる", () => {
         const logger = new Logger();
-        const data = logger.createBar(5);
+        const data = logger.createBar({ width: 5 });
         const name: LogType = "BAR";
 
         expect(data.type).toBe(name);

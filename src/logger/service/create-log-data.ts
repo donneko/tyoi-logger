@@ -4,7 +4,7 @@ import type {
     LogConfig,
     LoggerDependencies,
 } from "../types/logger.type.js";
-import { defaultLoggerDependencies } from "../deps/logger-dependencies.js";
+import { createLoggerDeps } from "../deps/create-logger-deps.js";
 
 export function createLogData(
     type: LogType,
@@ -13,10 +13,7 @@ export function createLogData(
     config?: LogConfig,
     dependencies: Partial<LoggerDependencies> = {}
 ): LoggerCreateData {
-    const deps = {
-        ...defaultLoggerDependencies(),
-        ...dependencies,
-    } as LoggerDependencies;
+    const deps = createLoggerDeps(dependencies);
 
     const messageLabel = config?.labelHidden ? "" : `[${type}] `;
     const createMessageLabel = config?.labelHidden ? "" : `${label} `;

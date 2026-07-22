@@ -1,11 +1,8 @@
 import type { LoggerDependencies } from "../types/logger.type.js";
-import { defaultLoggerDependencies } from "../deps/logger-dependencies.js";
+import { createLoggerDeps } from "../deps/create-logger-deps.js";
 
 export function getWidth(dependencies: Partial<LoggerDependencies> = {}): number {
-    const deps = {
-        ...defaultLoggerDependencies,
-        ...dependencies,
-    } as LoggerDependencies;
+    const deps = createLoggerDeps(dependencies);
 
     return deps.stdoutColumns ?? deps.envColumns ?? 80;
 }
