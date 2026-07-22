@@ -2,7 +2,7 @@ import readline from "node:readline/promises";
 import rend from "readline";
 import { stdin as input, stdout as output } from "node:process";
 
-export async function askInput(message: string): Promise<string | null> {
+export async function askInput(message: string): Promise<string | undefined> {
     const rl = readline.createInterface({ input, output });
 
     try {
@@ -12,7 +12,7 @@ export async function askInput(message: string): Promise<string | null> {
         rend.clearLine(process.stdout, 0);
 
         if (answer.length === 0) {
-            return null;
+            return undefined;
         }
 
         return answer;
