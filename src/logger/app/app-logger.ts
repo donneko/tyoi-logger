@@ -195,7 +195,8 @@ export class Logger {
     }
 
     window = (
-        window: { title: string; content: LoggerCreateData[] },
+        title: string,
+        content: LoggerCreateData[],
         dependencies: Partial<LoggerDependencies> = {}
     ): void => {
         const deps = createLoggerDependencies<LoggerDependencies>(
@@ -204,7 +205,7 @@ export class Logger {
         );
 
         if (!deps.isTTY) {
-            window.content.forEach((data) => {
+            content.forEach((data) => {
                 deps.logSelectProcess(data);
             });
             return;
@@ -215,13 +216,13 @@ export class Logger {
 
         output.push(`┌${"─".repeat(width)}┐`);
 
-        deps.textNormalizer(window.title, width).forEach((text) => {
+        deps.textNormalizer(title, width).forEach((text) => {
             output.push(this.createLine(text, width));
         });
 
         output.push(`├${"─".repeat(width)}┤`);
 
-        window.content.forEach((lineText) => {
+        content.forEach((lineText) => {
             deps.textNormalizer(lineText.createMessage, width).forEach((text) => {
                 output.push(this.createLine(text, width));
             });

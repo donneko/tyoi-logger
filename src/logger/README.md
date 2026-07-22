@@ -72,17 +72,15 @@ logger.bar();
 const barData = logger.createBar();
 ```
 
-### `window(window)`
+### `window(title,content)`
 
 タイトルと複数のログを、ターミナル幅に合わせた枠の中へ出力します。長いテキストは表示幅に応じて正規化されます。
 
 #### 引数
 
 ```ts
-{
-    title: string;
-    content: LoggerCreateData[];
-}
+title: string;
+content: LoggerCreateData[];
 ```
 
 - `title` — ウィンドウのタイトル
@@ -95,13 +93,13 @@ const barData = logger.createBar();
 #### 使用例
 
 ```ts
-logger.window({
-    title: "起動結果",
-    content: [
+logger.window(
+    "起動結果",
+    [
         logger.createInfo("設定を読み込みました"),
         logger.createSuccess("起動しました"),
     ],
-});
+);
 ```
 
 TTY 環境では枠付きで標準エラー出力へ表示します。非 TTY 環境では枠を作らず、`content` 内の各ログを通常のログと同じ方法で順番に出力します。
