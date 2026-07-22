@@ -25,7 +25,7 @@ describe("Logger クラスの通常ログ系", () => {
             expect(data.type).toBe(name);
             expect(data.message).toBe(`[${name}] ${message}`);
             expect(data.createMessage).toBe(`${color(`[${name}]`)} ${message}`);
-            expect(data.date).toEqual(expect.any(Date));
+            expect(data.date).toEqual(expect.any(Number));
         });
     });
 });
@@ -33,12 +33,13 @@ describe("Logger クラスの通常ログ系", () => {
 describe("Logger クラスのBAR", () => {
     it("ログのデータを正しく作成できる", () => {
         const logger = new Logger();
-        const data = logger.createBar({ width: 5 });
+        const data = logger.createBar({ width: 7 });
         const name: LogType = "BAR";
 
+        // ウィンドウで生成したときに、横幅を超えないようにするために、width - 2です。
         expect(data.type).toBe(name);
         expect(data.message).toBe("─────");
         expect(data.createMessage).toBe("─────");
-        expect(data.date).toEqual(expect.any(Date));
+        expect(data.date).toEqual(expect.any(Number));
     });
 });

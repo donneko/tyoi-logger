@@ -179,6 +179,8 @@ export class Logger {
             defaultLoggerDependencies,
             dependencies
         );
+
+        // ウィンドウで生成したときに、横幅を超えないように
         const message = `${"─".repeat(deps.width - 2)}`;
 
         const type: LogType = "BAR";

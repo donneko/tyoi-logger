@@ -19,7 +19,7 @@ describe("logSelectProcess", () => {
         logSelectProcess(testLoggerCreateData, deps);
 
         expect(deps.writeStderr).toHaveBeenCalledWith(testLoggerCreateData.createMessage);
-        expect(deps.writeStdout).toHaveBeenCalledWith();
+        expect(deps.writeStdout).not.toHaveBeenCalled();
     });
     it("非TTYのときに writeStdout に LoggerCreateData を送る", () => {
         const deps = {
@@ -30,7 +30,7 @@ describe("logSelectProcess", () => {
 
         logSelectProcess(testLoggerCreateData, deps);
 
-        expect(deps.writeStderr).toHaveBeenCalledWith();
+        expect(deps.writeStderr).not.toHaveBeenCalled();
         expect(deps.writeStdout).toHaveBeenCalledWith(testLoggerCreateData);
     });
 });
