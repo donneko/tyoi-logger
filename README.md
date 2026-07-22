@@ -22,8 +22,8 @@ log.process("pen");  // [PROCESS] pen
 log.success("fish"); // [SUCCESS] fish
 
 log.window(
-    title:"Hogehoge",
-    content:[
+    "Hogehoge",
+    [
         log.createInfo("dog"),     // [INFO] dog
         log.createSystem("cat"),   // [SYSTEM] cat
         log.createMessage("pet"),  // [MESSAGE] pet
