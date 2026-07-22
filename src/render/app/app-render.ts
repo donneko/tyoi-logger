@@ -4,11 +4,11 @@ export class Renderer {
     private beforeIndex: number = 0;
     private printData: string[] = [];
 
-    print(): void {
+    print(dependencies = process.stdout.write): void {
         this.clear();
 
         for (const message of this.printData) {
-            process.stdout.write(`${message}\n`);
+            dependencies(`${message}\n`);
         }
 
         this.beforeIndex = this.printData.length;
@@ -25,6 +25,6 @@ export class Renderer {
     }
 
     set(printData: string): void {
-        this.printData = printData.split("\n");
+        this.printData = printData.split("\n").filter((s) => s.trim().length);
     }
 }
