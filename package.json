@@ -8,7 +8,10 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist/",
-    "docs/",
+    "docs/api/",
+    "docs/guide/",
+    "docs/src/",
+    "docs/*.md",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
