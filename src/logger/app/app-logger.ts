@@ -1,8 +1,10 @@
 import pc from "picocolors";
 import stringWidth from "string-width";
 import type { LogType, LoggerCreateData } from "../types/logger.type.js";
-import { defaultLoggerDependencies } from "../deps/logger-dependencies.js";
-import { createLoggerDependencies } from "../deps/create-logger-deps.js";
+import {
+    createLoggerDependencies,
+    defaultLoggerDependencies,
+} from "../dependencies/logger-dependencies.js";
 import type { LoggerDependencies } from "../types/logger-dependencies.type.js";
 
 export class Logger {

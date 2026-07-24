@@ -1,14 +1,21 @@
 import readline from "readline";
+import {
+    createRenderDependencies,
+    defaultWriteDependencies,
+} from "../dependencies/render-dependencies.js";
+import type { RenderWriteDependencies } from "../types/render-dependencies.type.js";
 
 export class Renderer {
     private beforeIndex: number = 0;
     private printData: string[] = [];
 
-    print(dependencies = process.stdout.write): void {
+    print(dependencies: Partial<RenderWriteDependencies> = {}): void {
+        const deps = createRenderDependencies(defaultWriteDependencies, dependencies);
+
         this.clear();
 
         for (const message of this.printData) {
-            dependencies(`${message}\n`);
+            deps.processStderrWrite(`${message}\n`);
         }
 
         this.beforeIndex = this.printData.length;

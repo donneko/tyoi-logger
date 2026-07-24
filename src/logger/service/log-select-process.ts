@@ -1,6 +1,8 @@
 import type { LoggerCreateData } from "../types/logger.type.js";
-import { createLoggerDependencies } from "../deps/create-logger-deps.js";
-import { defaultLogSelectDependencies } from "../deps/logger-dependencies.js";
+import {
+    createLoggerDependencies,
+    defaultLogSelectDependencies,
+} from "../dependencies/logger-dependencies.js";
 import type { LoggerLogSelectDependencies } from "../types/logger-dependencies.type.js";
 
 export function logSelectProcess(

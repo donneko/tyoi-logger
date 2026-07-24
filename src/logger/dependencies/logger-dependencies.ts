@@ -11,6 +11,7 @@ import { writeStderr } from "../service/write-stderr.js";
 import { textNormalizer } from "../service/text-normalizer.js";
 import { writeStdout } from "../service/write-stdout.js";
 import { createLogData } from "../service/create-log-data.js";
+export { createLoggerDependencies } from "./create-logger-deps.js";
 
 export function defaultLoggerDependencies(): LoggerDependencies {
     return {
@@ -49,7 +50,9 @@ export function defaultLogSelectDependencies(): LoggerLogSelectDependencies {
 
 export function defaultWriteDependencies(): LoggerWriteDependencies {
     return {
-        processStderrWrite: process.stderr.write,
-        processStdoutWrite: process.stdout.write,
+        processStderrWrite: (...args: Parameters<typeof process.stderr.write>) =>
+            process.stderr.write(...args),
+        processStdoutWrite: (...args: Parameters<typeof process.stdout.write>) =>
+            process.stdout.write(...args),
     };
 }

@@ -1,6 +1,8 @@
 import type { LogType, LoggerCreateData, LogConfig } from "../types/logger.type.js";
-import { createLoggerDependencies } from "../deps/create-logger-deps.js";
-import { defaultCreateLogDataDependencies } from "../deps/logger-dependencies.js";
+import {
+    createLoggerDependencies,
+    defaultCreateLogDataDependencies,
+} from "../dependencies/logger-dependencies.js";
 import type { LoggerCreateLogDataDependencies } from "../types/logger-dependencies.type.js";
 
 export function createLogData(

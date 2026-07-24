@@ -1,5 +1,7 @@
-import { createLoggerDependencies } from "../deps/create-logger-deps.js";
-import { defaultGetWidthDependencies } from "../deps/logger-dependencies.js";
+import {
+    createLoggerDependencies,
+    defaultGetWidthDependencies,
+} from "../dependencies/logger-dependencies.js";
 import type { LoggerGetWidthDependencies } from "../types/logger-dependencies.type.js";
 
 export function getWidth(dependencies: Partial<LoggerGetWidthDependencies> = {}): number {
